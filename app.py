@@ -170,10 +170,13 @@ def download_model(url: str, folder: str, filename: str, hf_token: str, progress
     except Exception as e:
         return f"Error: {str(e)}"
 
-def delete_model(folder: str, filename: str) -> str:
+def delete_model(folder: str, filename: str, confirm: bool) -> str:
     """Delete a model file"""
     if not folder or not filename:
         return "Error: Folder and filename required"
+
+    if not confirm:
+        return "Error: Please check 'Confirm deletion' to delete the file"
 
     target_path = Path(MODELS_ROOT) / folder / filename
 
@@ -350,6 +353,7 @@ with gr.Blocks(title="CINDERGRACE Model Manager", theme=gr.themes.Soft()) as app
                     gr.Markdown("#### Delete Model")
                     delete_folder = gr.Dropdown(choices=MODEL_FOLDERS, label="Folder")
                     delete_file = gr.Dropdown(choices=[], label="File")
+                    delete_confirm = gr.Checkbox(label="Confirm deletion / Löschen bestätigen", value=False)
                     delete_btn = gr.Button("Delete", variant="stop")
                     delete_output = gr.Textbox(label="Status", interactive=False)
 
@@ -360,7 +364,7 @@ with gr.Blocks(title="CINDERGRACE Model Manager", theme=gr.themes.Soft()) as app
                     )
                     delete_btn.click(
                         fn=delete_model,
-                        inputs=[delete_folder, delete_file],
+                        inputs=[delete_folder, delete_file, delete_confirm],
                         outputs=delete_output
                     )
 
