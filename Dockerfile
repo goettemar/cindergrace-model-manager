@@ -40,5 +40,5 @@ EXPOSE 7860
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s \
     CMD curl -f http://localhost:7860/ || exit 1
 
-# Start command
-CMD ["./start.sh"]
+# Start command - directly with python for better logging
+CMD ["python", "app.py"]
