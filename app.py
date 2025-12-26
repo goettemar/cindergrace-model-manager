@@ -421,6 +421,101 @@ with gr.Blocks(title="CINDERGRACE Model Manager", theme=gr.themes.Soft()) as app
             - **audio_encoders/** - Audio models for speech-to-video
             """)
 
+        with gr.Tab("Setup Guide"):
+            gr.Markdown("""
+            ## RunPod Setup Guide
+
+            Complete guide to set up CINDERGRACE on RunPod.
+
+            ---
+
+            ### Step 1: Create a Network Volume
+
+            A Network Volume stores your AI models persistently. It can be attached to different pods.
+
+            1. Go to **RunPod** → **Storage** → **Network Volumes**
+            2. Click **+ New Network Volume**
+            3. Configure:
+               - **Name:** `cindergrace-models` (or any name you prefer)
+               - **Region:** Choose the same region where you will deploy pods!
+               - **Size:** 100-150 GB recommended
+                 - Minimal (Wan I2V only): ~40 GB
+                 - Standard (+ Flux): ~65 GB
+                 - Full (+ S2V, audio): ~80 GB
+            4. Click **Create**
+
+            > **Important:** The region must match your pod region! You cannot attach a volume from EU to a US pod.
+
+            ---
+
+            ### Step 2: Deploy Model Manager (this app)
+
+            1. Go to **Pods** → **+ Deploy**
+            2. Select template: **CINDERGRACE Model Manager**
+            3. **Pod Type:** Select **CPU** (no GPU needed - saves money!)
+            4. **Network Volume:** Select your `cindergrace-models` volume
+            5. Click **Deploy**
+            6. Wait for pod to start, then open the proxy URL (port 7860)
+
+            ---
+
+            ### Step 3: Download Models
+
+            1. Go to the **Quick Links** tab in this app
+            2. Copy a model URL
+            3. Go to the **Download** tab
+            4. Paste URL, select target folder, click Download
+            5. For gated models: Add your HuggingFace token
+               - Create token at: https://huggingface.co/settings/tokens
+               - Use "Read" permission only
+               - **Delete the token after use!**
+
+            ---
+
+            ### Step 4: Deploy ComfyUI (GPU Pod)
+
+            1. Go to **Pods** → **+ Deploy**
+            2. Select template: **CINDERGRACE ComfyUI**
+            3. **GPU:** RTX 4090, RTX 5090, or A100 recommended
+            4. **Network Volume:** Select the SAME `cindergrace-models` volume!
+            5. Click **Deploy**
+            6. Copy the proxy URL (port 8188)
+
+            ---
+
+            ### Step 5: Connect CINDERGRACE GUI
+
+            1. Open CINDERGRACE on your local computer
+            2. Go to **Settings** → **ComfyUI URL**
+            3. Paste the ComfyUI proxy URL: `https://<POD_ID>-8188.proxy.runpod.net`
+            4. Click **Test Connection**
+            5. Green = Ready to generate!
+
+            ---
+
+            ### Tips
+
+            - **Stop pods when not in use** to save money
+            - **Network Volume persists** even when pods are stopped
+            - **Model Manager only needs CPU** - use it to download, then stop the pod
+            - **Same volume for both pods** - models are shared automatically
+
+            ---
+
+            ### Troubleshooting
+
+            | Problem | Solution |
+            |---------|----------|
+            | "Connection refused" | Wait 1-2 min for ComfyUI to start |
+            | "Forbidden" (403) | Update CINDERGRACE to latest version |
+            | "Model not found" | Check if volume is attached, check folder names |
+            | Models not showing | Click "Refresh" in Overview tab |
+
+            ---
+
+            **Need help?** GitHub: https://github.com/goettemar/cindergrace-model-manager
+            """)
+
     # Connect disclaimer accept button
     accept_btn.click(
         fn=accept_disclaimer,

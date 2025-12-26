@@ -2,6 +2,18 @@
 
 Web UI for managing ComfyUI models on RunPod Network Volumes.
 
+## Prerequisites / Voraussetzungen
+
+Before deploying, create a Network Volume for your models:
+
+1. **RunPod** → **Storage** → **Network Volumes** → **+ New Network Volume**
+2. **Name:** `cindergrace-models` (or any name you prefer)
+3. **Region:** Same region as your pods!
+4. **Size:** 100-150 GB (depending on model set)
+5. Click **Create**
+
+> **Important:** Always use the same Network Volume for Model Manager and ComfyUI!
+
 ## Features
 
 - **Overview**: Scan and display all models across folders with sizes
