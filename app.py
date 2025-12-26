@@ -208,20 +208,21 @@ def move_model(source_folder: str, filename: str, target_folder: str) -> str:
     except Exception as e:
         return f"Error moving file: {e}"
 
-def get_files_in_folder(folder: str) -> list:
-    """Get list of files in a folder"""
+def get_files_in_folder(folder: str):
+    """Get list of files in a folder for dropdown update"""
     if not folder:
-        return []
+        return gr.Dropdown(choices=[], value=None)
 
     folder_path = Path(MODELS_ROOT) / folder
     if not folder_path.exists():
-        return []
+        return gr.Dropdown(choices=[], value=None)
 
     files = []
     for ext in ["*.safetensors", "*.ckpt", "*.pt", "*.pth", "*.bin", "*.gguf"]:
         files.extend([f.name for f in folder_path.glob(ext)])
 
-    return sorted(files)
+    sorted_files = sorted(files)
+    return gr.Dropdown(choices=sorted_files, value=sorted_files[0] if sorted_files else None)
 
 def create_folders() -> str:
     """Create all model folders"""
