@@ -1,5 +1,7 @@
 # CINDERGRACE Model Manager
 
+> Hinweis: Dieses Repository ist ein Hobby-/Experimentierprojekt. Es handelt sich nicht um ein gewerbliches Angebot (keine Auftragsannahme, keine Garantien, kein Supportversprechen).
+
 Web UI for managing ComfyUI models on RunPod Network Volumes.
 
 ## Prerequisites / Voraussetzungen
